@@ -6,8 +6,17 @@ using System.Threading.Tasks;
 
 namespace SongsAPI.Controllers
 {
+
     public class DemoController : ControllerBase
     {
+        private readonly IProvideServerStatus _statusService;
+
+        public DemoController(IProvideServerStatus statusService)
+        {
+            _statusService = statusService;
+        }
+
+
         // Get /status
         //[HttpGet("/status")]
         //public string GetTheStatus()
@@ -17,11 +26,14 @@ namespace SongsAPI.Controllers
         [HttpGet("/status")]
         public ActionResult<GetStatusResponse> GetTheStatus()
         {
-            var response = new GetStatusResponse
-            {
-                Message = "Everything is operational.",
-                LastChecked = DateTime.Now
-            };
+            // Don't Hard code responses
+            //var response = new GetStatusResponse
+            //{
+            //    Message = "Everything is operational.",
+            //    LastChecked = DateTime.Now
+            //};
+
+            GetStatusResponse response = _statusService.GetMyStatus();
 
             return Ok(response);
         }

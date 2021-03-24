@@ -10,6 +10,7 @@ namespace SongsApiIntegrationTests
 {
     public class ResourceSmokeTests : IClassFixture<BasicWebApplicationFactory>
     {
+        // How in DotNet to call API, in this case we are calling our fake one to test
         private readonly HttpClient _client;
 
         public ResourceSmokeTests(BasicWebApplicationFactory factory)
