@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using SongsAPI.Domain;
 using SongsAPI.Services;
 using System;
 using System.Collections.Generic;
@@ -26,6 +28,12 @@ namespace SongsAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddDbContext<SongsDataContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("songs")); //never ever hard-code connection string
+            });
+
             // Abstract to concrete mapping, for production usage
             services.AddScoped<IProvideServerStatus, ChrisServerStatus>();
             services.AddControllers();
