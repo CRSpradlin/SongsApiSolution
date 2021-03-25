@@ -36,7 +36,10 @@ namespace SongsAPI
 
             // Abstract to concrete mapping, for production usage
             services.AddScoped<IProvideServerStatus, ChrisServerStatus>();
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.IgnoreNullValues = true;
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SongsAPI", Version = "v1" });
