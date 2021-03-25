@@ -29,6 +29,17 @@ namespace SongsAPI
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(pol =>
+                {
+                    pol.WithOrigins("http://localhost:4200"); //You can specify list of origins or all
+                    pol.AllowAnyHeader();
+                    pol.AllowAnyMethod(); //You can specify the methods allowed
+                    pol.AllowCredentials();
+                });
+            });
+
             services.AddDbContext<SongsDataContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("songs")); //never ever hard-code connection string
@@ -55,6 +66,8 @@ namespace SongsAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SongsAPI v1"));
             }
+
+            app.UseCors();
 
             app.UseRouting();
 
