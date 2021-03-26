@@ -24,6 +24,21 @@ namespace SongsAPI.Controllers
             _config = config;
         }
 
+        [HttpDelete("/songs/{id:int}")]
+        public async Task<ActionResult> RemoveSong(int id)
+        {
+            var savedSong = await _context.GetActiveSongs().SingleOrDefaultAsync(s => s.Id == id);
+
+            if(savedSong != null)
+            {
+                savedSong.IsActive = false;
+                await _context.SaveChangesAsync() ;
+            }
+
+            // We return no content because returning a 404 is contradictory to removing a resource
+            return NoContent();
+        }
+
         [HttpPost("/songs")]
         public async Task<ActionResult> AddASong([FromBody] PostSongRequest request)
         {
