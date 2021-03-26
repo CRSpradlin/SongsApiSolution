@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using SongsAPI.Domain;
+using SongsAPI.Profiles;
 using SongsAPI.Services;
 using System;
 using System.Collections.Generic;
@@ -28,6 +30,16 @@ namespace SongsAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            //Creating a mapper to help bridge the gap between services and code objects
+            var mapperConfig = new MapperConfiguration(c =>
+            {
+                c.AddProfile(new SongsProfile());
+            });
+            var mapper = mapperConfig.CreateMapper();
+            //Configuring the mapper to be a singleton service so every http service doesn't create a new mapper each time
+            services.AddSingleton<IMapper>(mapper);
+            services.AddSingleton<MapperConfiguration>(mapperConfig);
 
             services.AddCors(options =>
             {

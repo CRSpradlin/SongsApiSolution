@@ -14,5 +14,10 @@ namespace SongsAPI.Domain
         }
         public DbSet<Song> Songs { get; set; }
         // We need to create this as a Scoped Service because all instances of editing the values of the database need to be editing the same database instance.
+
+        public IQueryable<Song> GetActiveSongs()
+        {
+            return Songs.Where(s => s.IsActive);
+        }
     }
 }
