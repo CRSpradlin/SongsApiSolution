@@ -27,6 +27,10 @@ namespace SongsAPI.Controllers
         [HttpPost("/songs")]
         public async Task<ActionResult> AddASong([FromBody] PostSongRequest request)
         {
+            // adding delay to simulate real life
+            await Task.Delay(8 * 1000);
+            //
+
             // 1. Validate the Entity (Title is Required, but Artist isn't)
             //      - If not valid, send a 400 with or without some details about what they did wrong.
             if (!ModelState.IsValid)
@@ -66,6 +70,10 @@ namespace SongsAPI.Controllers
         [HttpGet("/songs")]
         public async Task<ActionResult> GetAllSongs()
         {
+            // Adding a delay to simulate real life 
+            await Task.Delay(8 * 1000);
+            //
+
             var response = new GetSongsResponse();
 
             var data = await _context.GetActiveSongs()
